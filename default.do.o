@@ -1,0 +1,3 @@
+source ./.env
+inputfile=$1
+touch ${inputfile}     # fictional build cmd which produces $inputfile

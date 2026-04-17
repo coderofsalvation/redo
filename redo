@@ -1,0 +1,18 @@
+#!/bin/sh 
+# usage: ./redo
+# see https://redo.readthedocs.io/en/latest/
+source ./.env
+exitcmd(){ echo; }
+build(){
+  exitcmd(){ echo "\$ ./default.do" && sh $VERBOSE ./default.do; }
+  runner=default.do.${1##*.}
+  test -f $runner && echo "\$ ./$runner $dep" && sh $VERBOSE ./$runner $dep 
+}
+case "$1" in
+        -x)   debug="-x" ; shift ;                ;;
+         *)   for dep in $DEPS; do 
+                test -f $dep       || build $dep; 
+                test $dep -nt $BIN && build $dep; 
+              done                                ;;
+esac
+exitcmd
